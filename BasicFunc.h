@@ -2,10 +2,22 @@
 #include <stdlib.h>
 
 
-// float** allocM(int n);  Aloca memoria para matriz de dimensao n, nao inicializa
-// float* allocV(int n);  Aloca memoria para matriz de dimensao n, nao inicializa
-// void fillM(float **M, int n)  Inicializa valores da matriz M
-// void fillV(float *V, int n)  Inicializa valores da matriz M
+float** allocM(int n); // Aloca memoria para Matriz de dimensao n, nao inicializa
+float* allocV(int n); // Aloca memoria para Matriz de dimensao n, nao inicializa
+
+void fillM(float **M, int n); // Inicializa valores da Matriz M
+void fillV(float *V, int n); // Inicializa valores da Matriz M
+void zeroFyM(float **M, int n); // Inicializa os valores da Matriz com 0
+void zeroFyV(float *V, int n); // Inicializa os valores do Vetor com 0
+    
+    
+void printM(float **M, int n); // printa a Matriz M
+void printV(float *V, int n); // print o vetor V
+
+
+float** scalarMultM(float lambda, float **M, int n); // Multiplicacao Matriz por Escalar
+float* scalarMultV(float lambda, float *V, int n); // Multiplicacao Vetor por Escalar
+float* scalarMultMV(float **M, float *V, int n); // Multiplicacao Matriz x Vetor
 
 
 float** allocM(int n){
@@ -35,29 +47,93 @@ void fillM(float **M, int n){
     }
 }
 
-void fillV(float **V, int n){
+void fillV(float *V, int n){
     int i = 0;
     for(i=0;i<n;i++){
             scanf("%f",&V[i]);
     }
 }
 
+void zeroFyM(float **M, int n){
+    int i = 0;
+    int j = 0;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            M[i][j] = 0;
+        }
+    }
+}
+
+
+void zeroFyV(float *V, int n){
+    int i = 0;
+    for(i=0;i<n;i++){
+            V[i] = 0;
+        }
+}
+
+void identityFyM(float **M, int n){
+    int i = 0;
+    int j = 0;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if(i==j){
+                M[i][i] = 1;
+            }
+            else{
+                M[i][j] = 0;
+            }
+        }
+    }
+}
 
 void printM(float **M, int n){
     int i = 0;
     int j = 0;
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
-            printf("%f ",M[i][j]);
+            printf("%f\t",M[i][j]);
         }
         printf("\n");
     }
 }
 
-
-void printV(float **V, int n){
+void printV(float *V, int n){
     int i = 0;
     for(i=0;i<n;i++){
-            printf("%f ",V[i]);
+            printf("%f\t",V[i]);
     }
+}
+
+float** scalarMultM(float lambda, float **M, int n){
+   int i = 0;
+   int j = 0;
+   for(i=0;i<n;i++){
+       for(j=0;j<n;j++){
+           M[i][j] = lambda*M[i][j];
+       }
+   }
+   return M;
+}
+
+float* scalarMultV(float lambda, float *V, int n){
+    int i = 0;
+    for(i=0;i<n;i++){
+        V[i] = lambda*V[i];
+    }
+    return V;
+}
+
+float* scalarMultMV(float **M, float *V, int n){
+    int i;
+    int j;
+    float *MV;
+    MV = allocV(n);
+    zeroFyV(MV,n);
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            MV[i] += M[i][j] * V[j];
+        }
+    }
+    return MV;
 }

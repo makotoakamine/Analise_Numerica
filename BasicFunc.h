@@ -130,8 +130,8 @@ float* scalarMultMV(float **M, float *V, int n){
     int j;
     float *MV;
     MV = allocV(n);
-    zeroFyV(MV,n);
     for(i=0;i<n;i++){
+        MV[i] = 0;
         for(j=0;j<n;j++){
             MV[i] += M[i][j] * V[j];
         }
@@ -144,9 +144,9 @@ float** matrixMult(float **M, float **N, int n){
     int k = 0;
     float **MN;
     MN = allocM(n);
-    zeroFyM(M,n);
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
+            MN[i][j] = 0;
             for(k=0;k<n;k++){
                 MN[i][j] += M[i][k]*N[k][j];
             }

@@ -19,6 +19,7 @@ float** scalarMultM(float lambda, float **M, int n); // Multiplicacao Matriz por
 float* scalarMultV(float lambda, float *V, int n); // Multiplicacao Vetor por Escalar
 float* scalarMultMV(float **M, float *V, int n); // Multiplicacao Matriz x Vetor
 
+float** matrixMult(float **M, float **N, int n); //Multiplicacao entre Matrizes nxn
 
 float** allocM(int n){
     float **M;
@@ -136,4 +137,19 @@ float* scalarMultMV(float **M, float *V, int n){
         }
     }
     return MV;
+}
+float** matrixMult(float **M, float **N, int n){
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    float **MN;
+    MN = allocM(n);
+    zeroFyM(M,n);
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            for(k=0;k<n;k++){
+                MN[i][j] += M[i][k]*N[k][j];
+            }
+        }
+    }
 }

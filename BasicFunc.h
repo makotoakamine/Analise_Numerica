@@ -21,6 +21,9 @@ float* scalarMultMV(float **M, float *V, int n); // Multiplicacao Matriz x Vetor
 
 float** matrixMult(float **M, float **N, int n); //Multiplicacao entre Matrizes nxn
 
+float** upperTriangularFy(float **M, int n); // Retorna uma Matriz triangular superior relacionado a Matriz M
+
+
 float** allocM(int n){
     float **M;
     int i = 0;
@@ -104,6 +107,7 @@ void printV(float *V, int n){
     for(i=0;i<n;i++){
             printf("%f\t",V[i]);
     }
+    printf("\n");
 }
 
 float** scalarMultM(float lambda, float **M, int n){
@@ -152,4 +156,40 @@ float** matrixMult(float **M, float **N, int n){
             }
         }
     }
+}
+
+float** upperTriangularFy(float **M, int n){
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    float temp = 0.00000;
+    for(i=0;i<n-1;i++){
+        if(M[i][i] == 0){ //Se pivo = 0
+            j=i+1;
+            while(M[j][i] == 0 && j<n){
+                j++;
+            }
+            if(j==n){
+                printf("Erro , nao e' possivel triangularizar a matriz.\n");
+            }
+            else{ //Trocar linha 
+                for(k=i;k<n;k++){
+                    temp = M[i][k];
+                    M[i][k] = M[j][k];
+                    M[j][k] = temp;
+                }
+            }
+        }
+        //--------------------------------
+        for(j=i+1;j<n;j++){
+           if(M[j][i] != 0){
+               temp = -(M[j][i]/M[i][i]);
+               M[j][i] = 0;
+               for(k=1+i;k<n;k++){
+                   M[j][k] += temp*M[i][k];
+               }
+           }
+        }
+    }
+    return M;
 }

@@ -3,7 +3,7 @@
 #include <time.h>
 #include "BasicFunc.h"
 
-float** lowerTriangularFy(float **M, int n); // Retorna uma Matriz triangular inferior relacionado a Matriz M
+float** upperTriangularFh(float **M, int n); // Retorna uma Matriz triangular inferior relacionado a Matriz M
 
 
 void main(){
@@ -31,7 +31,7 @@ void main(){
 
 
 
-float** lowerTriangularFy(float **M, int n){
+float** upperTriangularFy(float **M, int n){
     int i = 0;
     int j = 0;
     int k = 0;

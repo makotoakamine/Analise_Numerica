@@ -23,6 +23,9 @@ float** matrixMult(float **M, float **N, int n); //Multiplicacao entre Matrizes 
 
 float** upperTriangularFy(float **M, int n); // Retorna uma Matriz triangular superior relacionado a Matriz M
 
+void stripDR(float **M, float **D, float **R, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
+void stripLDU(float **M, float **L, float **D, float **U, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
+float** diagInv(float **D, int n); // retorna a inversa da Matriz diagonal D
 
 float** allocM(int n){
     float **M;
@@ -192,4 +195,77 @@ float** upperTriangularFy(float **M, int n){
         }
     }
     return M;
+}
+
+void stripLDU(float **M, float **L, float **D, float **U, int n){
+    int i;
+    int j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if(i==j){
+                D[i][j] = M[i][j];
+                U[i][j] = 0;
+                L[i][j] = 0;
+            }
+            else if(i>j){
+                D[i][j] = 0;
+                L[i][j] = M[i][j];
+                U[i][j] = 0;
+            }
+            else{
+                D[i][j] = 0;
+                U[i][j] = M[i][j];
+                L[i][j] = 0;
+            }
+        }
+    }
+    
+}
+
+void stripDR(float **M, float **D, float **R, int n){
+    int i;
+    int j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if(i==j){
+                D[i][j] = M[i][j];
+                R[i][j] = 0;
+            }
+            else{
+                D[i][j] = 0;
+                R[i][j] = M[i][j];
+            }
+        }
+    }
+    
+}
+
+
+
+float** diagInv(float **D, int n){
+    int i;
+    int j;
+    float **invD;
+    invD = allocM(n);
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if(i==j){
+                invD[i][i] = 1/D[i][i];
+            }
+            else{
+                invD[i][j] = 0;
+            }
+        }
+    }
+    return invD;
+}
+
+
+float maxV(float *V, int n){
+    int i;
+    int max=0;
+    for(i=1;i<n;i++){
+        if(V[i]>V[max]) max = i;
+    }
+    return V[max];
 }

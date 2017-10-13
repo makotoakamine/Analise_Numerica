@@ -17,11 +17,15 @@ void printV(float *V, int n); // print o vetor V
 
 float** scalarMultM(float lambda, float **M, int n); // Multiplicacao Matriz por Escalar
 float* scalarMultV(float lambda, float *V, int n); // Multiplicacao Vetor por Escalar
-float* scalarMultMV(float **M, float *V, int n); // Multiplicacao Matriz x Vetor
+float* scalarMultMV(float **MV, float **M, float *V, int n); // Multiplicacao Matriz x Vetor
 
-float** matrixMult(float **M, float **N, int n); //Multiplicacao entre Matrizes nxn
+float** matrixMult(float **MN, float **M, float **N, int n); //Multiplicacao entre Matrizes nxn
+
+float* sumVV(float *VV, float *V_1, float *V_2, int n); //Soma 2 vetores de tamanho n
+float* subVV(float *VV, float *V_1, float *V_2, int n); //Subtrai V_2 de V_1
 
 float** upperTriangularFy(float **M, int n); // Retorna uma Matriz triangular superior relacionado a Matriz M
+
 
 void stripDR(float **M, float **D, float **R, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
 void stripLDU(float **M, float **L, float **D, float **U, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
@@ -132,11 +136,9 @@ float* scalarMultV(float lambda, float *V, int n){
     return V;
 }
 
-float* scalarMultMV(float **M, float *V, int n){
+float* scalarMultMV(float *MV, float **M, float *V, int n){
     int i;
     int j;
-    float *MV;
-    MV = allocV(n);
     for(i=0;i<n;i++){
         MV[i] = 0;
         for(j=0;j<n;j++){
@@ -145,12 +147,10 @@ float* scalarMultMV(float **M, float *V, int n){
     }
     return MV;
 }
-float** matrixMult(float **M, float **N, int n){
+float** matrixMult(float **MN, float **M, float **N, int n){
     int i = 0;
     int j = 0;
     int k = 0;
-    float **MN;
-    MN = allocM(n);
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
             MN[i][j] = 0;
@@ -159,6 +159,23 @@ float** matrixMult(float **M, float **N, int n){
             }
         }
     }
+    return MN;
+}
+
+float* sumVV(float *VV, float *V_1, float *V_2, int n){
+    int i;
+    for(i=0;i<n;i++){
+        VV[i] = V_1[i]+V_2[i];
+    }
+    return VV;
+}
+
+float* subVV(float *VV, float *V_1, float *V_2, int n){
+    int i;
+    for(i=0;i<n;i++){
+        VV[i] = V_1[i]-V_2[i];
+    }
+    return VV;
 }
 
 float** upperTriangularFy(float **M, int n){

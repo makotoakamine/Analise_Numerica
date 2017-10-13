@@ -17,7 +17,7 @@ void printV(float *V, int n); // print o vetor V
 
 float** scalarMultM(float lambda, float **M, int n); // Multiplicacao Matriz por Escalar
 float* scalarMultV(float lambda, float *V, int n); // Multiplicacao Vetor por Escalar
-float* scalarMultMV(float **MV, float **M, float *V, int n); // Multiplicacao Matriz x Vetor
+float* scalarMultMV(float *MV, float **M, float *V, int n); // Multiplicacao Matriz x Vetor
 
 float** matrixMult(float **MN, float **M, float **N, int n); //Multiplicacao entre Matrizes nxn
 

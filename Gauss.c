@@ -37,6 +37,7 @@ void main(){
     printf("Vetor solucao: \n");
     printV(X,n);
     printf("\n");
+    
 }
 
 

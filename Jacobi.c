@@ -1,3 +1,7 @@
+//Modificar o trecho da multiplicacao
+//Otimizar levando em conta que a matriz diagonal nao precisa
+//ser invertida.
+//Fazer uma matriz esparsa para calcular os termo dependentes.
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

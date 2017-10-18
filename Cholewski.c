@@ -5,7 +5,7 @@
 #include "BasicFunc.h"
 
 
-void fillValeat(float *V, int n){//preencher aleatoriamente o vetor mas não valida a matriz
+void fillValeat(double *V, int n){//preencher aleatoriamente o vetor mas não valida a matriz
     int i = 0;
     for(i=0;i<n;i++){
             V[i] = rand() %10;
@@ -13,7 +13,7 @@ void fillValeat(float *V, int n){//preencher aleatoriamente o vetor mas não val
     }
 }
 
-void fillMaleat(float **M, int n){ //preencher aleatoriamente a matriz mas não valida a matriz
+void fillMaleat(double **M, int n){ //preencher aleatoriamente a matriz mas não valida a matriz
     int i = 0;
     int j = 0;
     srand(time(NULL));
@@ -25,9 +25,9 @@ void fillMaleat(float **M, int n){ //preencher aleatoriamente a matriz mas não 
     }
 }
 
-void matriztriangularsup(float **U, float **M, int n){ //matriz U triangular superior tal que Ut x U = A
+void matriztriangularsup(double **U, double **M, int n){ //matriz U triangular superior tal que Ut x U = A
     int k,j, i;
-    float acRaiz=0, acRaiz2=0;
+    double acRaiz=0, acRaiz2=0;
 
     for(k=0;k<n;k++){
       for(j=0;j<k;j++){
@@ -47,7 +47,7 @@ void matriztriangularsup(float **U, float **M, int n){ //matriz U triangular sup
    }
 }
 
-void resolvesistemas(float *V, float *W, float *X, float **U, int n){
+void resolvesistemas(double *V, double *W, double *X, double **U, int n){
   int i,j;
 
   for(i=0; i<n; i++){
@@ -67,23 +67,23 @@ void resolvesistemas(float *V, float *W, float *X, float **U, int n){
   }
 }
 
-void main() {
+void main(int argc, char *argv[]) {
   int n;
   double acc=0;
   clock_t t1, t2;
 
-  printf("valor de n: ");
+  // printf("valor de n: ");
   scanf("%d", &n);
-  float **M = allocM(n);
-  float **U = allocM(n);
-  float *V = allocV(n);
-  float *W = allocV(n);
-  float *X = allocV(n);
+  double **M = allocM(n);
+  double **U = allocM(n);
+  double *V = allocV(n);
+  double *W = allocV(n);
+  double *X = allocV(n);
 
-  printf("Entre com a matriz:\n");
+  // printf("Entre com a matriz:\n");
   //fillMaleat(M,n); Se for gerar aleatoriamente
   fillM(M,n);
-  printf("Entre com o vetor:\n");
+  // printf("Entre com o vetor:\n");
   //fillValeat(V,n); Se for gerar aleatoriamente
   fillV(V,n);
 
@@ -93,23 +93,17 @@ void main() {
   resolvesistemas(V,W,X,U,n);
   t2=clock();
 
-  printM(M,n);
-  printf("-----------------\n");
-  printM(U,n);
-  printf("-----------------\n");
-  printf("Vetor X: \n");
-  printV(X,n);
-  printf("-----------------\n");
+  // printM(M,n);
+  // printf("-----------------\n");
+  // printM(U,n);
+  // printf("-----------------\n");
 //  printV(W,n);
 //  printf("-----------------\n");
+  printf("Cholewski: \n");
   printf("Tempo(s): %.6f\n", (double)(t2-t1)/(CLOCKS_PER_SEC));
   acc += (double)(t2-t1)/CLOCKS_PER_SEC;
-  printf("Tempo medio: %f\n", acc/n);
-
-  free(M);
-  free(U);
-  free(V);
-  free(W);
-  free(X);
-
+  if(argv[1][0] == 'Y'){
+    printV(X,n);
+    printf("\n");
+  }
 }

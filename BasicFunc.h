@@ -1,72 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 
-float** allocM(int n); // Aloca memoria para Matriz de dimensao n, nao inicializa
-float* allocV(int n); // Aloca memoria para Matriz de dimensao n, nao inicializa
+double** allocM(int n); // Aloca memoria para Matriz de dimensao n, nao inicializa
+double* allocV(int n); // Aloca memoria para Matriz de dimensao n, nao inicializa
 
-void fillM(float **M, int n); // Inicializa valores da Matriz M
-void fillV(float *V, int n); // Inicializa valores da Matriz M
-void zeroFyM(float **M, int n); // Inicializa os valores da Matriz com 0
-void zeroFyV(float *V, int n); // Inicializa os valores do Vetor com 0
+void fillM(double **M, int n); // Inicializa valores da Matriz M
+void fillV(double *V, int n); // Inicializa valores da Matriz M
+void zeroFyM(double **M, int n); // Inicializa os valores da Matriz com 0
+void zeroFyV(double *V, int n); // Inicializa os valores do Vetor com 0
     
     
-void printM(float **M, int n); // printa a Matriz M
-void printV(float *V, int n); // print o vetor V
+void printM(double **M, int n); // printa a Matriz M
+void printV(double *V, int n); // print o vetor V
 
 
-float** scalarMultM(float lambda, float **M, int n); // Multiplicacao Matriz por Escalar
-float* scalarMultV(float lambda, float *V, int n); // Multiplicacao Vetor por Escalar
-float* scalarMultMV(float *MV, float **M, float *V, int n); // Multiplicacao Matriz x Vetor
+double** scalarMultM(double **lambdaM, double lambda, double **M, int n); // Multiplicacao Matriz por Escalar
+double* scalarMultV(double *lambdaV, double lambda, double *V, int n); // Multiplicacao Vetor por Escalar
+double* scalarMultMV(double *MV, double **M, double *V, int n); // Multiplicacao Matriz x Vetor
 
-float** matrixMult(float **MN, float **M, float **N, int n); //Multiplicacao entre Matrizes nxn
+double** matrixMult(double **MN, double **M, double **N, int n); //Multiplicacao entre Matrizes nxn
 
-float* sumVV(float *VV, float *V_1, float *V_2, int n); //Soma 2 vetores de tamanho n
-float* subVV(float *VV, float *V_1, float *V_2, int n); //Subtrai V_2 de V_1
+double* sumVV(double *VV, double *V_1, double *V_2, int n); //Soma 2 vetores de tamanho n
+double* subVV(double *VV, double *V_1, double *V_2, int n); //Subtrai V_2 de V_1
 
-float** upperTriangularFy(float **M, int n); // Retorna uma Matriz triangular superior relacionado a Matriz M
+double** upperTriangularFy(double **M, int n); // Retorna uma Matriz triangular superior relacionado a Matriz M
 
-void stripLU(float **M, float **L, float **R, int n); //Separa a matrix em L+U = M
-void stripDR(float **M, float **D, float **R, int n); //Separa a diagonal da Matriz M na Matrix D e o restante na Matrix R
-void sparse_stripDR(float **M, float *D, float **R, int n); //Separa a diagonal da Matriz M no vetor D e o restante na Matrix R
-void stripLDU(float **M, float **L, float **D, float **U, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
-float** diagInv(float **D, int n); // retorna a inversa da Matriz diagonal D
+void stripLU(double **M, double **L, double **R, int n); //Separa a matrix em L+U = M
+void stripDR(double **M, double **D, double **R, int n); //Separa a diagonal da Matriz M na Matrix D e o restante na Matrix R
+void sparse_stripDR(double **M, double *D, double **R, int n); //Separa a diagonal da Matriz M no vetor D e o restante na Matrix R
+void stripLDU(double **M, double **L, double **D, double **U, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
+double** diagInv(double **D, int n); // retorna a inversa da Matriz diagonal D
 
-float** allocM(int n){
-    float **M;
+double Ninf(double *V, int n); // retorna a norma do vetor
+double** allocM(int n){
+    double **M;
     int i = 0;
-    M = (float **)malloc(n*sizeof(float *));
+    M = (double **)malloc(n*sizeof(double *));
     for(i=0;i<n;i++){
-        M[i] = (float *)malloc(n*sizeof(float));
+        M[i] = (double *)malloc(n*sizeof(double));
     }
     return M;
 }
 
-float* allocV(int n){
-    float *v;
+double* allocV(int n){
+    double *v;
     int i = 0;
-    v = (float *)malloc(n*sizeof(float));
+    v = (double *)malloc(n*sizeof(double));
     return v;
 }
 
-void fillM(float **M, int n){
+void fillM(double **M, int n){
     int i = 0;
     int j = 0;
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
-            scanf("%f",&M[i][j]);
+            scanf("%lf",&M[i][j]);
         }
     }
 }
 
-void fillV(float *V, int n){
+void fillV(double *V, int n){
     int i = 0;
     for(i=0;i<n;i++){
-            scanf("%f",&V[i]);
+            scanf("%lf",&V[i]);
     }
 }
 
-void zeroFyM(float **M, int n){
+void zeroFyM(double **M, int n){
     int i = 0;
     int j = 0;
     for(i=0;i<n;i++){
@@ -77,14 +79,14 @@ void zeroFyM(float **M, int n){
 }
 
 
-void zeroFyV(float *V, int n){
+void zeroFyV(double *V, int n){
     int i = 0;
     for(i=0;i<n;i++){
             V[i] = 0;
         }
 }
 
-void identityFyM(float **M, int n){
+void identityFyM(double **M, int n){
     int i = 0;
     int j = 0;
     for(i=0;i<n;i++){
@@ -99,45 +101,45 @@ void identityFyM(float **M, int n){
     }
 }
 
-void printM(float **M, int n){
+void printM(double **M, int n){
     int i = 0;
     int j = 0;
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
-            printf("%f\t",M[i][j]);
+            printf("%.10lf\t",M[i][j]);
         }
         printf("\n");
     }
 }
 
-void printV(float *V, int n){
+void printV(double *V, int n){
     int i = 0;
     for(i=0;i<n;i++){
-            printf("%f\t",V[i]);
+            printf("%.10lf\t",V[i]);
     }
     printf("\n");
 }
 
-float** scalarMultM(float lambda, float **M, int n){
+double** scalarMultM(double **lambdaM, double lambda, double **M, int n){
    int i = 0;
    int j = 0;
    for(i=0;i<n;i++){
        for(j=0;j<n;j++){
-           M[i][j] = lambda*M[i][j];
+           lambdaM[i][j] = lambda*M[i][j];
        }
    }
-   return M;
+   return lambdaM;
 }
 
-float* scalarMultV(float lambda, float *V, int n){
+double* scalarMultV(double *lambdaV, double lambda, double *V, int n){
     int i = 0;
     for(i=0;i<n;i++){
-        V[i] = lambda*V[i];
+        lambdaV[i] = lambda*V[i];
     }
-    return V;
+    return lambdaV;
 }
 
-float* scalarMultMV(float *MV, float **M, float *V, int n){
+double* scalarMultMV(double *MV, double **M, double *V, int n){
     int i;
     int j;
     for(i=0;i<n;i++){
@@ -148,7 +150,7 @@ float* scalarMultMV(float *MV, float **M, float *V, int n){
     }
     return MV;
 }
-float** matrixMult(float **MN, float **M, float **N, int n){
+double** matrixMult(double **MN, double **M, double **N, int n){
     int i = 0;
     int j = 0;
     int k = 0;
@@ -163,7 +165,7 @@ float** matrixMult(float **MN, float **M, float **N, int n){
     return MN;
 }
 
-float* sumVV(float *VV, float *V_1, float *V_2, int n){
+double* sumVV(double *VV, double *V_1, double *V_2, int n){
     int i;
     for(i=0;i<n;i++){
         VV[i] = V_1[i]+V_2[i];
@@ -171,7 +173,7 @@ float* sumVV(float *VV, float *V_1, float *V_2, int n){
     return VV;
 }
 
-float* subVV(float *VV, float *V_1, float *V_2, int n){
+double* subVV(double *VV, double *V_1, double *V_2, int n){
     int i;
     for(i=0;i<n;i++){
         VV[i] = V_1[i]-V_2[i];
@@ -179,11 +181,11 @@ float* subVV(float *VV, float *V_1, float *V_2, int n){
     return VV;
 }
 
-float** upperTriangularFy(float **M, int n){
+double** upperTriangularFy(double **M, int n){
     int i = 0;
     int j = 0;
     int k = 0;
-    float temp = 0.00000;
+    double temp = 0.00000;
     for(i=0;i<n-1;i++){
         if(M[i][i] == 0){ //Se pivo = 0
             j=i+1;
@@ -215,7 +217,7 @@ float** upperTriangularFy(float **M, int n){
     return M;
 }
 
-void stripLU(float **M, float **L, float **U, int n){
+void stripLU(double **M, double **L, double **U, int n){
     int i;
     int j;
     for(i=0;i<n;i++){
@@ -233,7 +235,7 @@ void stripLU(float **M, float **L, float **U, int n){
     
 }
 
-void stripLDU(float **M, float **L, float **D, float **U, int n){
+void stripLDU(double **M, double **L, double **D, double **U, int n){
     int i;
     int j;
     for(i=0;i<n;i++){
@@ -258,7 +260,7 @@ void stripLDU(float **M, float **L, float **D, float **U, int n){
     
 }
 
-void stripDR(float **M, float **D, float **R, int n){
+void stripDR(double **M, double **D, double **R, int n){
     int i;
     int j;
     for(i=0;i<n;i++){
@@ -276,7 +278,7 @@ void stripDR(float **M, float **D, float **R, int n){
     
 }
 
-void sparse_stripDR(float **M, float *D, float **R, int n){
+void sparse_stripDR(double **M, double *D, double **R, int n){
     int i;
     int j;
     for(i=0;i<n;i++){
@@ -293,10 +295,10 @@ void sparse_stripDR(float **M, float *D, float **R, int n){
     
 }
 
-float** diagInv(float **D, int n){
+double** diagInv(double **D, int n){
     int i;
     int j;
-    float **invD;
+    double **invD;
     invD = allocM(n);
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
@@ -312,11 +314,11 @@ float** diagInv(float **D, int n){
 }
 
 
-float maxV(float *V, int n){
+double Ninf(double *V, int n){
     int i;
     int max=0;
     for(i=1;i<n;i++){
-        if(V[i]>V[max]) max = i;
+        if(fabs(V[i])>fabs(V[max])) max = i;
     }
     return V[max];
 }

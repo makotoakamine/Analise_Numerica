@@ -6,18 +6,22 @@
 #include <stdlib.h>
 #include <time.h>
 #include "BasicFunc.h"
+#include <math.h>
 
-void main(){
-    float **M;
-    float *V;
-    float *MV_temp;
-    float *VV;
-    float **X;
-    float *D;
-    float **R;
+void main(int argc, char *argv[]){
+    double **M;
+    double *V;
+    double *MV_temp;
+    double *VV;
+    double **X;
+    double *D;
+    double **R;
     int i = 0;
     int j = 1;
     int n;
+    double tol = pow(10,-8);
+    double eps = 1.000000 + tol;
+    int nmax = atoi(argv[1]);
     
     
     double acc=0;
@@ -30,7 +34,7 @@ void main(){
     fillV(V,n);
     MV_temp = allocV(n);
     VV = allocV(n);
-    X = (float **)malloc(2*sizeof(float *)); 
+    X = (double **)malloc(2*sizeof(double *)); 
     X[0] = allocV(n);
     X[1] = allocV(n);
     zeroFyV(X[0],n);
@@ -40,18 +44,24 @@ void main(){
     sparse_stripDR(M,D,R,n);
     t1 = clock();
     //trecho a ser cronometrado
-    for(i=0;i<100;i++){
+    for(i=0;i<nmax && eps > tol;i++){
         MV_temp = scalarMultMV(MV_temp,R,X[i&1],n); 
         VV = subVV(VV,V,MV_temp,n); 
         for(j=0;j<n;j++){
             X[(i+1)&1][j] = VV[j]/D[j];
         }
+        VV = subVV(VV,X[(i+1)&1],X[i&1],n);
+        eps = Ninf(VV,n);
     }
     
     
     t2 = clock();
     acc += (double)(t2-t1)/CLOCKS_PER_SEC;
+    printf("Jacobi Otimizado: \n");
     printf("Tempo(s): %.6f\n", (double)(t2-t1)/CLOCKS_PER_SEC);
-    printV(X[i&1],n);
-    printf("\n");
+    printf("Iteracoes: %d\n",i);
+    if(argv[2][0] == 'Y'){
+        printV(X[i&1],n);
+        printf("\n");
+    }
 }

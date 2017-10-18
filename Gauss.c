@@ -3,13 +3,13 @@
 #include <time.h>
 #include "BasicFunc.h"
 
-void rowEl(float **M, float *V, int n); // escalona a matriz [MV] -M MX=V 
-float* solveMXV(float **M, float *V, int n); // resolve o sistema escalonado triangular superior MX=V, retorna X
+void rowEl(double **M, double *V, int n); // escalona a matriz [MV] -M MX=V 
+double* solveMXV(double **M, double *V, int n); // resolve o sistema escalonado triangular superior MX=V, retorna X
 
-void main(){
-    float **M;
-    float *V;
-    float *X;
+void main(int argc, char *argv[]){
+    double **M;
+    double *V;
+    double *X;
     int i = 0;
     int n;
     
@@ -29,14 +29,18 @@ void main(){
     X = solveMXV(M,V,n);
     t2 = clock();
     acc += (double)(t2-t1)/CLOCKS_PER_SEC;
+    printf("Gauss: \n");
     printf("Tempo(s): %.6f\n", (double)(t2-t1)/CLOCKS_PER_SEC);
-    printf("Matriz escalonada:\n");
-    printM(upperTriangularFy(M,n),n);
-    printf("Vetor coeficiente independente: \n");
-    printV(V,n);
-    printf("Vetor solucao: \n");
-    printV(X,n);
-    printf("\n");
+    // printf("Matriz escalonada:\n");
+    // printM(upperTriangularFy(M,n),n);
+    // printf("Vetor coeficiente independente: \n");
+    // printV(V,n);
+
+    if(argv[1][0] == 'Y'){
+        printf("Vetor solucao: \n");
+        printV(X,n);
+        printf("\n");
+    }
     
 }
 
@@ -44,11 +48,11 @@ void main(){
 
 
 
-void rowEl(float **M, float *V, int n){
+void rowEl(double **M, double *V, int n){
     int i = 0;
     int j = 0;
     int k = 0;
-    float temp = 0.00000;
+    double temp = 0.00000;
     for(i=0;i<n-1;i++){
         if(M[i][i] == 0){ //Se pivo = 0
             j=i+1;
@@ -86,10 +90,10 @@ void rowEl(float **M, float *V, int n){
 
 
 
-float* solveMXV(float **M, float *V, int n){
+double* solveMXV(double **M, double *V, int n){
     int i = 0;
     int j = 0;
-    float *X;
+    double *X;
     X = allocV(n);
     X[n-1] = V[n-1]/M[n-1][n-1];
     for(i=2;i<=n;i++){

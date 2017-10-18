@@ -26,8 +26,9 @@ float* subVV(float *VV, float *V_1, float *V_2, int n); //Subtrai V_2 de V_1
 
 float** upperTriangularFy(float **M, int n); // Retorna uma Matriz triangular superior relacionado a Matriz M
 
-
-void stripDR(float **M, float **D, float **R, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
+void stripLU(float **M, float **L, float **R, int n); //Separa a matrix em L+U = M
+void stripDR(float **M, float **D, float **R, int n); //Separa a diagonal da Matriz M na Matrix D e o restante na Matrix R
+void sparse_stripDR(float **M, float *D, float **R, int n); //Separa a diagonal da Matriz M no vetor D e o restante na Matrix R
 void stripLDU(float **M, float **L, float **D, float **U, int n); //Separa a diagonal da Matriz M na patrix D e o restante na Matrix R
 float** diagInv(float **D, int n); // retorna a inversa da Matriz diagonal D
 
@@ -214,6 +215,24 @@ float** upperTriangularFy(float **M, int n){
     return M;
 }
 
+void stripLU(float **M, float **L, float **U, int n){
+    int i;
+    int j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if(i>=j){
+                L[i][j] = M[i][j];
+                U[i][j] = 0;
+            }
+            else{
+                U[i][j] = M[i][j];
+                L[i][j] = 0;
+            }
+        }
+    }
+    
+}
+
 void stripLDU(float **M, float **L, float **D, float **U, int n){
     int i;
     int j;
@@ -257,7 +276,22 @@ void stripDR(float **M, float **D, float **R, int n){
     
 }
 
-
+void sparse_stripDR(float **M, float *D, float **R, int n){
+    int i;
+    int j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if(i==j){
+                D[j] = M[i][j];
+                R[i][j] = 0;
+            }
+            else{
+                R[i][j] = M[i][j];
+            }
+        }
+    }
+    
+}
 
 float** diagInv(float **D, int n){
     int i;

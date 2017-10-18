@@ -42,23 +42,15 @@ void main(){
     //trecho a ser cronometrado
     D = diagInv(D,n);
     for(i=0;i<100;i++){
-        printM(R,n);
-        printV(X[i&1],n);
         MV_temp = scalarMultMV(MV_temp,R,X[i&1],n);
-        printV(MV_temp,n);
         VV = subVV(VV,V,MV_temp,n);
-        printV(VV,n);
         X[(i+1)&1] = scalarMultMV(X[i&1],D,VV,n);
-        printf("solucao corrente:\n");
-        printV(X[(i+1)&1],n);
-        printf("\n");
     }
     
     
     t2 = clock();
     acc += (double)(t2-t1)/CLOCKS_PER_SEC;
     printf("Tempo(s): %.6f\n", (double)(t2-t1)/CLOCKS_PER_SEC);
-    printf("Vetor solucao: \n");
     printV(X[i&1],n);
     printf("\n");
 }

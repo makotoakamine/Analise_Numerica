@@ -2,13 +2,15 @@
 #include "BasicFunc.h"
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
+#define PI 3.14159265358979323846
 double funcaoR(double x){ //função de entrada
-  return pow(x,3) + pow(x,2);
+  return -pow(PI,2)*sin(PI*x);
 }
 
 void main(int argc, char *argv[]){
-    int n, i, j, a ,b, nos;
+    int n, i, j, a ,b;
     double *V, R, x, alpha, beta;
 
 //   printf("Número de partições: \n");
@@ -44,14 +46,19 @@ void main(int argc, char *argv[]){
         }
         printf("\n");
     }
-    
-    for(i=0; i<n; i++ ){
-        x = ((double)a + i*h);
+    FILE *fp;
+    char filename[50];
+    i = sprintf(filename,"Xrange_%d.txt",n-1);
+    fp = fopen(filename,"w");
+    for(i=0; i<n-1; i++ ){
+        x = (double)a + ((double)i)*h;
+        fprintf(fp,"%.10lf\n",x);
         V[i] = pow(h,2)*funcaoR(x);
     }
-    
+    fclose(fp);
     V[0] = V[0] + alpha;
-    V[n-1] = V[n-1] + beta;
+    V[n-2] = V[n-2] + beta;
+    
     for(i=0;i<n-1;i++){
         printf("%.10lf\n",V[i]);
     }

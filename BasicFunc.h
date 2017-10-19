@@ -320,5 +320,5 @@ double Ninf(double *V, int n){
     for(i=1;i<n;i++){
         if(fabs(V[i])>fabs(V[max])) max = i;
     }
-    return V[max];
+    return fabs(V[max]);
 }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "BasicFunc.h"
+#include <string.h>
 
 void rowEl(double **M, double *V, int n); // escalona a matriz [MV] -M MX=V 
 double* solveMXV(double **M, double *V, int n); // resolve o sistema escalonado triangular superior MX=V, retorna X
@@ -40,6 +41,16 @@ void main(int argc, char *argv[]){
         printf("Vetor solucao: \n");
         printV(X,n);
         printf("\n");
+    }
+    else{
+        FILE *fp;
+        char filename[50];
+        i=sprintf(filename,"gauss_y_%d.txt",n);
+        fp = fopen(filename,"w");
+        for(i=0;i<n;i++){
+        fprintf(fp,"%.10lf\n",X[i]);
+        }
+        fclose(fp);
     }
     
 }

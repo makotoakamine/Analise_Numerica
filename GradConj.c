@@ -176,4 +176,15 @@ void main(int argc, char *argv[]){
     printV(Xnew, n);
     printf("\n");
   }
+  else{
+    FILE *fp;
+        char filename[50];
+        int i;
+        i=sprintf(filename,"gradconj_y_%d.txt",n);
+        fp = fopen(filename,"w");
+        for(i=0;i<n;i++){
+        fprintf(fp,"%.10lf\n",Xnew[i]);
+        }
+        fclose(fp);
+  }
 }

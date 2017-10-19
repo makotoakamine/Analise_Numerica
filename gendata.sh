@@ -1,3 +1,4 @@
+./gridvecgen 11 $1 $2 $3 $4 > 10.data
 ./gridvecgen 51 $1 $2 $3 $4 > 50.data
 ./gridvecgen 101 $1 $2 $3 $4 > 100.data
 ./gridvecgen 151 $1 $2 $3 $4 > 150.data

@@ -73,6 +73,16 @@ void main(int argc, char *argv[]){
         printV(X[i&1],n);
         printf("\n");
     }
+    else{
+        FILE *fp;
+        char filename[50];
+        j=sprintf(filename,"gauss-seidel_y_%d.txt",n);
+        fp = fopen(filename,"w");
+        for(j=0;j<n;j++){
+        fprintf(fp,"%.10lf\n",X[i&1][j]);
+        }
+        fclose(fp);
+    }
 }
 
 
